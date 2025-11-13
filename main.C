@@ -2,7 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cmath>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
+#define TERMINALWIDTH 40
 
 /** 
     @brief Untuk menaruh text menjadi di tengah dengan mengetahui width yang tersedia
@@ -36,6 +39,9 @@ void centertext(int widht, const char *text,char space){
 
 
 
+
+
+
 int main(){
- 
+    
 }
