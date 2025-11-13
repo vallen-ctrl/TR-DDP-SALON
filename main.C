@@ -5,8 +5,10 @@
 
 #ifdef _WIN32 
     #include<windows.h>
+    #define CLEAR "cls"
 #elif __linux__ 
     #include <unistd.h>
+    #define CLEAR "clear"
 #endif
 
 #include <sys/ioctl.h>
