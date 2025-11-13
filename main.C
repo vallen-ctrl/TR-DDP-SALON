@@ -2,10 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cmath>
-#include <unistd.h>
+
+#ifdef _WIN32 
+    #include<windows.h>
+#elif __linux__ 
+    #include <unistd.h>
+#endif
+
 #include <sys/ioctl.h>
 
-#define TERMINALWIDTH 40
+#define TERMINALWIDTH 45 //ini namanya global variable
 
 /** 
     @brief Untuk menaruh text menjadi di tengah dengan mengetahui width yang tersedia
@@ -14,7 +20,8 @@
     @param space adalah character untuk yang di print ketika ada spcae misalnya kosong " "
     @return hasilnya text akan menjadi di tengah tanpa ada enter didalamnya.
 */
-void centertext(int widht, const char *text,char space){
+void centertext(int widht, const char *text,char space) // ini yang di dalam sini juga namanya local variable
+{
     if (widht < strlen(text))
     {
         printf ("Eror while print text, expected width > lenght text");
@@ -39,9 +46,7 @@ void centertext(int widht, const char *text,char space){
 
 
 
-
-
-
 int main(){
-    
+    int asu = 0; // ini namanyua local variable 
+    centertext(TERMINALWIDTH, "halo", ' ');
 }
