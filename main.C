@@ -3,16 +3,6 @@
 #include <stdlib.h>
 #include <cmath>
 
-#ifdef _WIN32 
-    #include<windows.h>
-    #define CLEAR "cls"
-#elif __linux__ 
-    #include <unistd.h>
-    #define CLEAR "clear"
-#endif
-
-#include <sys/ioctl.h>
-
 #define TERMINALWIDTH 45 //ini namanya global variable
 
 /** 
@@ -46,9 +36,29 @@ void centertext(int widht, const char *text,char space) // ini yang di dalam sin
     }
 }
 
+/**
+ * @brief bagian ini untuk menulis seberapa banyak spasi yang dibutuhkan. dimulai dari 0
+ * @param many adalah bagian dari banyaknnya space yang akan diulang.
+ * @return kluaran dari fungsi ini adala bentuk text. kosong saja 
+ */
+void prtEmty(int many){
+    for(int i = 0; i<many; i++){
+        printf(" ");
+    }
+}
+
+void loading(){
+    int marginRight = 20;
+    int width = 20;
+    for(int progres = 0; progres < 100; progres ++){
+       printf("|");
+       
+    }
+
+}
+
 
 
 int main(){
-    int asu = 0; // ini namanyua local variable 
-    centertext(TERMINALWIDTH, "halo", ' ');
+    printf("hi");
 }
