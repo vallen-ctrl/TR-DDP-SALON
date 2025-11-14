@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cmath>
+#include <ncurses.h>
 
 #define TERMINALWIDTH 45 //ini namanya global variable
 
@@ -55,10 +56,12 @@ void loading(){
        
     }
 
+
 }
 
 
 
 int main(){
     printf("hi");
+
 }
