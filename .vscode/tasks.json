@@ -1,29 +1,28 @@
 {
-    "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build & Run (Windows exe via Wine)",
-            "type": "shell",
-            "command": "x86_64-w64-mingw32-gcc",
+            "type": "cppbuild",
+            "label": "C/C++: gcc.exe build active file",
+            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}.exe",
-                "&&",
-                "wine",
-                "${fileDirname}/${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"
             },
-            "problemMatcher": ["$gcc"],
+            "problemMatcher": [
+                "$gcc"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "detail": "Compile and run Windows exe using Wine"
         }
-    ]
+    ],
+    "version": "2.0.0"
 }
