@@ -58,10 +58,18 @@ void loading(){
 }
 
 void menu(){
-    printf("tai");
+    prtEmty(10);
+    centertext(20, "=", '=');
+    printf("\n");
+    prtEmty(10);
+    printf("|");
+    centertext(18, "MENU BAR", ' ');
+    printf("|");
+    printf("\n");
+    prtEmty(10);
+    centertext(20, "=", '=');
 }
 
 int main(){
-    printf("hi");
     menu();
 }
