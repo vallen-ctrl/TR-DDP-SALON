@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cmath>
-
 #define TERMINALWIDTH 45 //ini namanya global variable
 
 /** 
@@ -55,10 +54,14 @@ void loading(){
        
     }
 
+
 }
 
-
+void menu(){
+    printf("tai");
+}
 
 int main(){
     printf("hi");
+    menu();
 }
