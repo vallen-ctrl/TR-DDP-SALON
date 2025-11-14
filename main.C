@@ -2,7 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cmath>
-#include <ncurses.h>
+#ifdef _WIN32
+    #include <curses.h>  // PDCurses untuk Windows
+#else
+    #include <ncurses.h> // NCurses untuk Linux
+#endif
 
 #define TERMINALWIDTH 45 //ini namanya global variable
 
