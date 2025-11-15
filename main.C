@@ -59,15 +59,15 @@ void loading(){
 
 void menu(){
     prtEmty(10);
-    centertext(20, "=", '=');
+    centertext(21, "=", '=');
     printf("\n");
     prtEmty(10);
     printf("|");
-    centertext(18, "MENU BAR", ' ');
+    centertext(18, "SALON ANJAY MABAR", ' ');
     printf("|");
     printf("\n");
     prtEmty(10);
-    centertext(20, "=", '=');
+    centertext(21, "=", '=');
 }
 
 int main(){
