@@ -68,6 +68,32 @@ void menu(){
     printf("\n");
     prtEmty(10);
     centertext(21, "=", '=');
+    printf("\n");
+    prtEmty(10);
+    printf("|");
+    centertext(19, "1. pilihan1", ' ');
+    printf("|");
+    printf("\n");
+    prtEmty(10);
+    printf("|");
+    centertext(19, "2. pilihan2", ' ');
+    printf("|");
+    printf("\n");
+    prtEmty(10);
+    printf("|");
+    centertext(19, "3. pilihan3", ' ');
+    printf("|");
+    printf("\n");
+    prtEmty(10);
+    printf("|");
+    centertext(19, "4. pilihan4", ' ');
+    printf("|");
+    printf("\n");
+    prtEmty(10);
+    centertext(21, "=", '=');
+    printf("\n");
+    prtEmty(10);
+    printf("masukkan pilihan : ");
 }
 
 int main(){
