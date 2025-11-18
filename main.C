@@ -9,7 +9,7 @@
 // bagian global deklarasi function
 void centertext(int, const char *,char);
 void prtEmty(int many);
-void mainLoading();
+void loading1();
 
 void menu();
 
@@ -200,7 +200,7 @@ void createBox(int posX, int width, int posY, int height,
     
 }
 
-void mainLoading(){
+void loading1(){
     int centerTerminal = round(TERMINALWIDTH/2);
     int length = 20;
     int startpointX = centerTerminal - round(length/2); //X pos
@@ -210,6 +210,10 @@ void mainLoading(){
 
     gotoxy(startpointX-3, startpointY-1); centertext(length+8, "GOTO MAIN MENU", ' ');
     commonloading(length, "[", "]", BR_VERTICAL_HEAVY, NULL,false, startpointX, startpointY, 300);
+}
+
+void starttomenuLoading(){
+    loading1();
     clrscr();
     menu();
 }
@@ -229,6 +233,6 @@ void menu(){
 
 int main(){
     clrscr();
-    mainLoading();
+    starttomenuLoading();
     printf("\n\n\n");
 }
