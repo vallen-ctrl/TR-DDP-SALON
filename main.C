@@ -133,7 +133,7 @@ void commonloading(int lenght, const char *kurungBuka, const char *kurungTutup,
  */
 
 void createBox(int posX, int width, int posY, int height,
-    const char *horizontalLine= "-", 
+    const char *horizontalLine = "-", 
     const char *verticaLine = "|",
     const char *topLeftChar = "+",
     const char *topRightChar = "+",
