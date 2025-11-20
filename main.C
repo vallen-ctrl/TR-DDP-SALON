@@ -7,14 +7,16 @@
 
 char PASSWORD[100] = "1234";
 char USERNAME[100] = "admin";
+
 // TOLONG SETING INI SESUAI DENGAN SPESIFIKASI TERMINAL ANDA
 #define TERMINALWIDTH 100 
 #define TERMINALHEIGH 25
 
-
 int centerPointTerminalX = round(TERMINALWIDTH/2);
 int centerPointTerminalY = round(TERMINALHEIGH/2);
-// bagian global deklarasi function
+
+// bagian global deklarasi function 
+// !! CAUTION PLEASE DO NOT TIUCH IT !! 
 void centertext(int, const char *,char);
 void prtEmty(int many);
 void loading1();
@@ -33,7 +35,7 @@ void createBox(int , int , int , int ,
     const char * ,
     const char * ,
     const char * );
-// =======================
+// ======================================
 
 /** 
     @brief Untuk menaruh text menjadi di tengah dengan mengetahui width yang tersedia
@@ -235,7 +237,6 @@ void LoginPage(){
     char username[100];
     char password[100];
 
-
     createBox(posX, menuwidth, posY, menuHeight, BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY, BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
     gotoxy(posX+1, posY+1);
     centertext(menuwidth-2,"Hi WELCOME HERE", ' ');
@@ -251,7 +252,7 @@ void LoginPage(){
         for (int i = 0; i < strlen(message); i++)
         {
             gotoxy(centerPointTerminalX-(round(strlen(message)/2))+i, centerPointTerminalY);
-            textcolor(2);
+            textcolor(GREEN);
             printf("%c", message[i]);
             fflush(stdout);
             delay(100);
@@ -263,7 +264,7 @@ void LoginPage(){
         for (int i = 0; i < strlen(message); i++)
         {
             gotoxy(centerPointTerminalX-(round(strlen(message)/2))+i, centerPointTerminalY);
-            textcolor(4);
+            textcolor(RED);
             printf("%c", message[i]);
             fflush(stdout);
             delay(100);
