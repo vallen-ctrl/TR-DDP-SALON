@@ -4,14 +4,22 @@
 #include <math.h>
 #include "conio.h"
 #include "char.h"
-#define TERMINALWIDTH 45 //ini namanya global variable
 
+char PASSWORD[100] = "1234";
+char USERNAME[100] = "admin";
+// TOLONG SETING INI SESUAI DENGAN SPESIFIKASI TERMINAL ANDA
+#define TERMINALWIDTH 100 
+#define TERMINALHEIGH 25
+
+
+int centerPointTerminalX = round(TERMINALWIDTH/2);
+int centerPointTerminalY = round(TERMINALHEIGH/2);
 // bagian global deklarasi function
 void centertext(int, const char *,char);
 void prtEmty(int many);
 void loading1();
 
-void menu();
+void LoginPage();
 
 void commonloading(int, const char *, const char *, 
     const char *,
@@ -212,27 +220,61 @@ void loading1(){
     commonloading(length, "[", "]", BR_VERTICAL_HEAVY, NULL,false, startpointX, startpointY, 300);
 }
 
-void starttomenuLoading(){
-    loading1();
+void starttoLoginLoading(){
+    // loading1();
     clrscr();
-    menu();
+    LoginPage();
 }
 
-void menu(){
-    prtEmty(10);
-    centertext(20, "=", '=');
-    printf("\n");
-    prtEmty(10);
-    printf("|");
-    centertext(18, "MENU BAR", ' ');
-    printf("|");
-    printf("\n");
-    prtEmty(10);
-    centertext(20, "=", '=');
+void LoginPage(){
+    int menuwidth = 30;
+    int menuHeight = 7;
+    int posX = centerPointTerminalX-(round(menuwidth/2));
+    int posY = centerPointTerminalY-(round(menuHeight/2));
+
+    char username[100];
+    char password[100];
+
+
+    createBox(posX, menuwidth, posY, menuHeight, BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY, BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
+    gotoxy(posX+1, posY+1);
+    centertext(menuwidth-2,"Hi WELCOME HERE", ' ');
+    gotoxy(posX+2, posY+3);
+    printf("Username: "); scanf(" %[^\n]", username);
+    gotoxy(posX+2, posY+4);
+    printf("Password: "); scanf(" %[^\n]", password);
+
+    if (strcmp(USERNAME, username) == 0 && strcmp(PASSWORD, password) == 0)
+    {
+        clrscr();
+        char message[] = "login anda berhasil";
+        for (int i = 0; i < strlen(message); i++)
+        {
+            gotoxy(centerPointTerminalX-(round(strlen(message)/2))+i, centerPointTerminalY);
+            textcolor(2);
+            printf("%c", message[i]);
+            fflush(stdout);
+            delay(100);
+        }
+        
+    }else{
+        clrscr();
+        char message[] = "USERNAME OR PASSWORD WRONG!";
+        for (int i = 0; i < strlen(message); i++)
+        {
+            gotoxy(centerPointTerminalX-(round(strlen(message)/2))+i, centerPointTerminalY);
+            textcolor(4);
+            printf("%c", message[i]);
+            fflush(stdout);
+            delay(100);
+        }
+    }
+    
+
 }
 
 int main(){
     clrscr();
-    starttomenuLoading();
-    printf("\n\n\n");
+    starttoLoginLoading();
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }

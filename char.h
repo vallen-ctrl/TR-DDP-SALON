@@ -23,3 +23,6 @@
  *  @brief Box Drwaing heavy Down and Left
  */
 #define BR_HD_L "┓"
+
+#define BR_HD_BR "┗"
+#define BR_HD_BL "┛"
