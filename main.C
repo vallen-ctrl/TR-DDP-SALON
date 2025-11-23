@@ -97,5 +97,22 @@ void menu(){
 }
 
 int main(){
+    int pil;
     menu();
+    scanf("%d", &pil);
+    if(pil == 1){
+        printf("anjay");
+    }
+    else if(pil == 2){
+        printf("anjay juga");
+    }
+    else if(pil == 3){
+        printf("anjay lagi");
+    }
+    else if(pil == 4){
+        printf("anjay terus");
+    }
+    else {
+        printf("milih yang bener lah!");
+    }
 }
