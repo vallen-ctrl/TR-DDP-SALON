@@ -1,6 +1,7 @@
 /**
  * myconio.h - Cross-platform conio.h implementation
- * Kompatibel untuk Windows dan Linux
+ * Kompatibel untuk Windows (MinGW/CodeBlocks) dan Linux
+ * TIDAK memerlukan conio.h - implementasi penuh custom
  * 
  * Cara pakai:
  * - Ganti #include <conio.h> dengan #include "myconio.h"
@@ -14,12 +15,191 @@
 #include <stdio.h>
 
 #ifdef _WIN32
-    // ===== WINDOWS =====
-    #include <conio.h>
+    // ===== WINDOWS (MinGW/CodeBlocks) =====
     #include <windows.h>
     
-    // Windows sudah punya semua fungsi conio.h
-    // Cuma tambahkan wrapper jika perlu
+    // Konstanta warna untuk textcolor()
+    #define BLACK        0
+    #define BLUE         1
+    #define GREEN        2
+    #define CYAN         3
+    #define RED          4
+    #define MAGENTA      5
+    #define BROWN        6
+    #define LIGHTGRAY    7
+    #define DARKGRAY     8
+    #define LIGHTBLUE    9
+    #define LIGHTGREEN   10
+    #define LIGHTCYAN    11
+    #define LIGHTRED     12
+    #define LIGHTMAGENTA 13
+    #define YELLOW       14
+    #define WHITE        15
+    
+    /**
+     * getch() - Membaca satu karakter tanpa echo dan tanpa perlu Enter
+     * Return: karakter yang ditekan
+     */
+    int getch(void) {
+        HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        DWORD mode, count;
+        char ch;
+        
+        // Simpan mode lama
+        GetConsoleMode(hStdin, &mode);
+        
+        // Set mode: matikan line input dan echo
+        SetConsoleMode(hStdin, 0);
+        
+        // Baca satu karakter
+        ReadConsole(hStdin, &ch, 1, &count, NULL);
+        
+        // Kembalikan mode lama
+        SetConsoleMode(hStdin, mode);
+        
+        return ch;
+    }
+    
+    /**
+     * getche() - Membaca satu karakter dengan echo (terlihat di layar)
+     * Return: karakter yang ditekan
+     */
+    int getche(void) {
+        int ch = getch();
+        putchar(ch);  // Echo karakter
+        fflush(stdout);
+        return ch;
+    }
+    
+    /**
+     * kbhit() - Cek apakah ada keyboard input (non-blocking)
+     * Return: 1 jika ada input, 0 jika tidak
+     */
+    int kbhit(void) {
+        HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        DWORD events;
+        INPUT_RECORD buffer;
+        
+        // Cek jumlah event di buffer
+        PeekConsoleInput(hStdin, &buffer, 1, &events);
+        
+        if (events > 0) {
+            // Cek apakah ada key event
+            if (buffer.EventType == KEY_EVENT && buffer.Event.KeyEvent.bKeyDown) {
+                return 1;
+            } else {
+                // Buang event yang bukan keyboard
+                ReadConsoleInput(hStdin, &buffer, 1, &events);
+                return kbhit();  // Cek lagi
+            }
+        }
+        return 0;
+    }
+    
+    /**
+     * clrscr() - Clear screen (membersihkan layar)
+     */
+    void clrscr(void) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        COORD coordScreen = {0, 0};
+        DWORD cCharsWritten;
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        DWORD dwConSize;
+        
+        // Dapatkan ukuran buffer
+        GetConsoleScreenBufferInfo(hConsole, &csbi);
+        dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+        
+        // Reset ke warna default (putih text, hitam background)
+        WORD defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+        
+        // Isi dengan spasi
+        FillConsoleOutputCharacter(hConsole, ' ', dwConSize, coordScreen, &cCharsWritten);
+        
+        // Isi dengan atribut warna default (ini yang penting!)
+        FillConsoleOutputAttribute(hConsole, defaultColor, dwConSize, coordScreen, &cCharsWritten);
+        
+        // Set warna console ke default
+        SetConsoleTextAttribute(hConsole, defaultColor);
+        
+        // Pindah cursor ke (0,0)
+        SetConsoleCursorPosition(hConsole, coordScreen);
+    }
+    
+    /**
+     * gotoxy() - Pindahkan cursor ke posisi (x, y)
+     * x: kolom (horizontal), mulai dari 1
+     * y: baris (vertical), mulai dari 1
+     */
+    void gotoxy(int x, int y) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        COORD coord;
+        coord.X = x - 1;  // Windows mulai dari 0
+        coord.Y = y - 1;
+        SetConsoleCursorPosition(hConsole, coord);
+    }
+    
+    /**
+     * textcolor() - Set warna text
+     * color: gunakan konstanta warna (RED, GREEN, dll)
+     */
+    void textcolor(int color) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        
+        GetConsoleScreenBufferInfo(hConsole, &csbi);
+        
+        // Pertahankan warna background, ganti foreground
+        WORD newColor = (csbi.wAttributes & 0xF0) | (color & 0x0F);
+        SetConsoleTextAttribute(hConsole, newColor);
+    }
+    
+    /**
+     * textbackground() - Set warna background
+     * color: gunakan konstanta warna
+     */
+    void textbackground(int color) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        
+        GetConsoleScreenBufferInfo(hConsole, &csbi);
+        
+        // Pertahankan warna foreground, ganti background
+        WORD newColor = (csbi.wAttributes & 0x0F) | ((color & 0x0F) << 4);
+        SetConsoleTextAttribute(hConsole, newColor);
+    }
+    
+    /**
+     * wherex() - Dapatkan posisi kolom cursor saat ini
+     * Return: posisi X (kolom), mulai dari 1
+     */
+    int wherex(void) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        
+        GetConsoleScreenBufferInfo(hConsole, &csbi);
+        return csbi.dwCursorPosition.X + 1;  // Kembalikan 1-based
+    }
+    
+    /**
+     * wherey() - Dapatkan posisi baris cursor saat ini
+     * Return: posisi Y (baris), mulai dari 1
+     */
+    int wherey(void) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        
+        GetConsoleScreenBufferInfo(hConsole, &csbi);
+        return csbi.dwCursorPosition.Y + 1;  // Kembalikan 1-based
+    }
+    
+    /**
+     * delay() - Delay/pause program dalam milidetik
+     * ms: waktu delay dalam milidetik
+     */
+    void delay(int ms) {
+        Sleep(ms);
+    }
     
 #else
     // ===== LINUX =====
@@ -232,7 +412,8 @@
  */
 static inline void resetcolor(void) {
     #ifdef _WIN32
-        system("color");
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     #else
         printf("\033[0m");
         fflush(stdout);
@@ -244,9 +425,17 @@ static inline void resetcolor(void) {
  */
 static inline void clearline(void) {
     #ifdef _WIN32
-        printf("\r");
-        for(int i = 0; i < 80; i++) printf(" ");
-        printf("\r");
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        COORD coord;
+        DWORD written;
+        
+        GetConsoleScreenBufferInfo(hConsole, &csbi);
+        coord.X = 0;
+        coord.Y = csbi.dwCursorPosition.Y;
+        
+        FillConsoleOutputCharacter(hConsole, ' ', csbi.dwSize.X, coord, &written);
+        SetConsoleCursorPosition(hConsole, coord);
     #else
         printf("\033[2K\r");
         fflush(stdout);

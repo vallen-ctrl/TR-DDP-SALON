@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include "conio.h"
+#include "myconio.h"
 #include "char.h"
 
 char PASSWORD[100] = "1234";
@@ -223,7 +223,7 @@ void loading1(){
 }
 
 void starttoLoginLoading(){
-    // loading1();
+    loading1();
     clrscr();
     LoginPage();
 }
