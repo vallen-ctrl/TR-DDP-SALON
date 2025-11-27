@@ -24,11 +24,9 @@ echo.
 
 REM Jalankan di terminal baru
 echo [INFO] Membuka popup terminal...
-start cmd /k "main.exe && echo. && echo Tekan tombol apapun untuk keluar... && pause >nul"
+start cmd /k "main.exe && echo. && echo Tekan tombol apapun untuk keluar... && pause && exit"
 
 echo.
 echo ==========================================
 echo   Program berjalan di terminal baru!
 echo ==========================================
-
-pause
