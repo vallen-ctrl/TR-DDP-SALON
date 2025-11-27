@@ -275,6 +275,9 @@ void LoginPage(){
 }
 
 int main(){
+    #ifdef _WIN32
+        system("chcp 65001");
+    #endif
     clrscr();
     starttoLoginLoading();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
