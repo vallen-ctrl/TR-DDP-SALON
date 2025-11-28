@@ -274,6 +274,73 @@ void LoginPage(){
 
 }
 
+void MenuBar(){
+    int menuWidth = 30;
+    int menuHeight = 10;
+
+    while (1)  // loop menu
+    {
+        clrscr();
+        int posX = centerPointTerminalX - (menuWidth/2);
+        int posY = centerPointTerminalY - (menuHeight/2);
+
+        // Buat box menu
+        createBox(posX, menuWidth, posY, menuHeight,
+                  BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY,
+                  BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
+
+        // Judul
+        gotoxy(posX+1, posY+1);
+        centertext(menuWidth-2, "MAIN MENU", ' ');
+
+        // Isi dari menu
+        gotoxy(posX+3, posY+3);  printf("1. Pricelist");
+        gotoxy(posX+3, posY+4);  printf("2. Laporan Pendapatan");
+        gotoxy(posX+3, posY+5);  printf("3.  ");
+        gotoxy(posX+3, posY+6);  printf("4. Exit");
+
+        int pilih;
+        gotoxy(posX+3, posY+8);
+        printf("Pilih menu: ");
+        scanf("%d", &pilih);
+
+        // Logika menu
+        switch (pilih) {
+            case 1:
+                clrscr();
+                printf("Pricelist...\n");
+                printf("Tekan ENTER untuk kembali...");
+                getchar(); getchar();
+                break;
+
+            case 2:
+                clrscr();
+                printf("Laporan Pendapatan...\n");
+                printf("Tekan ENTER untuk kembali...");
+                getchar(); getchar();
+                break;
+
+            case 3:
+                clrscr();
+                printf(" ...\n");
+                printf("Tekan ENTER untuk kembali...");
+                getchar(); getchar();
+                break;
+
+            case 4:
+                clrscr();
+                return; // keluar dari fungsi → selesai
+
+            default:
+                clrscr();
+                printf("Pilihan tidak valid!\n");
+                printf("Tekan ENTER untuk kembali...");
+                getchar(); getchar();
+                break;
+        }
+    }
+}
+
 int main(){
     #ifdef _WIN32
         system("chcp 65001");
@@ -282,4 +349,6 @@ int main(){
     starttoLoginLoading();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
     //////
+    clrscr();
+    MenuBar();
 }
