@@ -9,13 +9,23 @@ char PASSWORD[100] = "1234";
 char USERNAME[100] = "admin";
 
 // TOLONG SETING INI SESUAI DENGAN SPESIFIKASI TERMINAL ANDA
-#define TERMINALWIDTH 100
+#define TERMINALWIDTH 120
 #define TERMINALHEIGH 25
 
 bool isLogin = false;
 
 int centerPointTerminalX = round(TERMINALWIDTH / 2);
 int centerPointTerminalY = round(TERMINALHEIGH / 2);
+
+struct typedaftar
+{
+    char nama[100];
+    int harga;
+};
+
+struct typedaftar class_harga[] = {
+    {"potong rambut", 15000},
+    {"potong cuci tonik", 20000}};
 
 // bagian global deklarasi function
 // !! CAUTION PLEASE DO NOT TIUCH IT !!
@@ -37,6 +47,7 @@ void createBox(int, int, int, int,
                const char *,
                const char *);
 // ======================================
+
 
 /**
     @brief Untuk menaruh text menjadi di tengah dengan mengetahui width yang tersedia
@@ -246,15 +257,24 @@ void LoginPage()
     char password[100];
 
     clrscr();
+    gotoxy(posX + 7, posY - 3);
+    printf("┓   ┏┓  ┏┓  ┳  ┳┓");
+    gotoxy(posX + 7, posY - 2);
+    printf("┃   ┃┃  ┃┓  ┃  ┃┃");
+    gotoxy(posX + 7, posY - 1);
+    printf("┗┛  ┗┛  ┗┛  ┻  ┛┗");
+
     createBox(posX, menuwidth, posY, menuHeight, BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY, BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
     gotoxy(posX + 1, posY + 1);
     centertext(menuwidth - 2, "Hi WELCOME HERE", ' ');
     gotoxy(posX + 2, posY + 3);
     printf("Username: ");
-    scanf(" %[^\n]", username);
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = '\0';
     gotoxy(posX + 2, posY + 4);
     printf("Password: ");
-    scanf(" %[^\n]", password);
+    fgets(password, sizeof(password), stdin);
+    password[strcspn(password, "\n")] = '\0';
 
     if (strcmp(USERNAME, username) == 0 && strcmp(PASSWORD, password) == 0)
     {
@@ -268,6 +288,7 @@ void LoginPage()
             fflush(stdout);
             delay(100);
         }
+        delay(2000);
         isLogin = true;
     }
     else
@@ -285,29 +306,55 @@ void LoginPage()
 
         clrscr();
         textcolor(WHITE);
-        char question[] = "Apakah anda mau mencoba lagi?";
+        char question[] = "Apakah anda mau mencoba lagi? [tekan a | b]";
         gotoxy(centerPointTerminalX - (round(strlen(question) / 2)), centerPointTerminalY);
         printf("%s", question);
 
         gotoxy(centerPointTerminalX - 4, centerPointTerminalY + 1);
-        textcolor(GREEN);
+        textcolor(WHITE);
         printf("Y");
-        textcolor(WHITE);
         printf(" / ");
-        textcolor(RED);
         printf("N");
-        gotoxy(centerPointTerminalX - 2, centerPointTerminalY + 2);
-        char pil;
-        getchar();
-        textcolor(WHITE);
-        scanf("%c", &pil);
-        if (pil == 'Y' || pil == 'y')
+
+        int pilihan = 0;
+        while (true)
         {
-            LoginPage();   
-        }else{
+            if (kbhit)
+            {
+                int ch = getch();
+                if (ch == 'a' || ch == 75)
+                {
+                    gotoxy(centerPointTerminalX - 4, centerPointTerminalY + 1);
+                    textcolor(GREEN);
+                    printf("Y");
+                    textcolor(WHITE);
+                    printf(" / ");
+                    printf("N");
+                    pilihan = 1;
+                }else if(ch == 'd' || ch == 77){
+                    gotoxy(centerPointTerminalX - 4, centerPointTerminalY + 1);
+                    textcolor(WHITE);
+                    printf("Y");
+                    printf(" / ");
+                    textcolor(RED);
+                    printf("N");
+                    pilihan = 0;
+                }else if (ch == 10)
+                {
+                   break; 
+                }
+                
+            }
+        }
+
+        if (pilihan == 1)
+        {
+            LoginPage();
+        }
+        else
+        {
             isLogin = false;
         }
-        
     }
 }
 
@@ -322,7 +369,6 @@ void MenuBar()
     {
         clrscr();
         textcolor(WHITE);
-
         // Buat box menu
         createBox(posX, menuWidth, posY, menuHeight,
                   BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY,
@@ -389,6 +435,20 @@ void MenuBar()
     }
 }
 
+void loadingtoMenubar(){
+    int lenght = 20;
+    int height = 4;
+    int padding = 2;
+    int posX = centerPointTerminalX - round((lenght+padding+2)/2);
+    int posY = 6;
+    
+    char msg[]= "load file please wait";
+    gotoxy(posX+padding, posY+1);
+    centertext(lenght, "load file", ' ');
+    createBox(posX, lenght+padding+4, posY,height);
+    commonloading(lenght, BR_VERTICAL_LIGHT,BR_VERTICAL_LIGHT, BR_VERTICAL_FULLBLOCK, NULL, false, posX+padding, posY+2, 150);
+}
+
 int main()
 {
 #ifdef _WIN32
@@ -396,11 +456,20 @@ int main()
 #endif
 
     clrscr();
+    // showDaftarHarga();
     starttoLoginLoading();
     clrscr();
     if (isLogin)
     {
+        loadingtoMenubar();
+        clrscr();
         MenuBar();
+    }else{
+        printf(" ██████╗  ██████╗  ██████╗ ██████╗     ██████╗ ██╗   ██╗███████╗    ██╗\n");
+        printf("██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║\n");
+        printf("██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║\n");
+        printf("██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝\n");
+        printf("╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝    ██████╔╝   ██║   ███████╗    ██╗\n");
+        printf(" ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝     ╚═════╝    ╚═╝   ╚══════╝    ╚═╝\n");
     }
-    
 }
