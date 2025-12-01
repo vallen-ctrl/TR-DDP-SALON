@@ -17,16 +17,18 @@ bool isLogin = false;
 int centerPointTerminalX = round(TERMINALWIDTH / 2);
 int centerPointTerminalY = round(TERMINALHEIGH / 2);
 
-struct typedaftar
-{
-    char nama[100];
+struct Layanan {
+    char nama[50];
     int harga;
 };
 
-struct typedaftar class_harga[] = {
-    {"potong rambut", 15000},
-    {"potong cuci tonik", 20000}};
-
+struct Layanan daftar[10] = {
+    {"Potong", 15000},
+    {"Potong Cuci Blow", 20000},
+    {"Cuci Catok", 25000},
+    {"Coloring", 150000},
+    {"Smoothing", 150000},
+};
 // bagian global deklarasi function
 // !! CAUTION PLEASE DO NOT TIUCH IT !!
 void centertext(int, const char *, char);
@@ -46,6 +48,8 @@ void createBox(int, int, int, int,
                const char *,
                const char *,
                const char *);
+void DaftarHarga();
+void cetakStruk(int*, int);
 // ======================================
 
 /**
@@ -383,11 +387,7 @@ void MenuBar()
         gotoxy(posX + 3, posY + 3);
         printf("1. Pricelist");
         gotoxy(posX + 3, posY + 4);
-        printf("2. Laporan Pendapatan");
-        gotoxy(posX + 3, posY + 5);
-        printf("3.  ");
-        gotoxy(posX + 3, posY + 6);
-        printf("4. Exit");
+        printf("2. Exit");
 
         int pilih;
         gotoxy(posX + 3, posY + 8);
@@ -399,29 +399,10 @@ void MenuBar()
         {
         case 1:
             clrscr();
-            printf("Pricelist...\n");
-            printf("Tekan ENTER untuk kembali...");
-            getchar();
-            getchar();
+            DaftarHarga();
             break;
 
         case 2:
-            clrscr();
-            printf("Laporan Pendapatan...\n");
-            printf("Tekan ENTER untuk kembali...");
-            getchar();
-            getchar();
-            break;
-
-        case 3:
-            clrscr();
-            printf(" ...\n");
-            printf("Tekan ENTER untuk kembali...");
-            getchar();
-            getchar();
-            break;
-
-        case 4:
             clrscr();
             return; // keluar dari fungsi → selesai
 
@@ -451,6 +432,249 @@ void loadingtoMenubar()
     commonloading(lenght, BR_VERTICAL_LIGHT, BR_VERTICAL_LIGHT, BR_VERTICAL_FULLBLOCK, NULL, false, posX + padding, posY + 2, 150);
 }
 
+void DaftarHarga() {
+    clrscr();
+
+    int jumlah = 5;
+    int width = 70;
+    int height = jumlah + 12;
+    int posX = centerPointTerminalX - (width/2);
+    int posY = centerPointTerminalY - (height/2);
+
+    createBox(posX, width, posY, height,
+              BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY,
+              BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
+
+    gotoxy(posX+1, posY+1);
+    centertext(width-2, "DAFTAR HARGA SALON", ' ');
+
+    int pilihan[5] = {0}; // Array untuk menyimpan pilihan (max 10)
+    int jumlahPilihan = 0; // Counter jumlah pilihan yang sudah dipilih
+    bool selesai = false;
+
+    while (!selesai) {
+        // Tampilkan daftar layanan
+        for (int i = 0; i < jumlah; i++) {
+            gotoxy(posX+3, posY + 3 + i);
+            
+            // Cek apakah layanan ini sudah dipilih
+            bool sudahDipilih = false;
+            int jumlahKaliDipilih = 0;
+            
+            for (int j = 0; j < jumlahPilihan; j++) {
+                if (pilihan[j] == i + 1) {
+                    sudahDipilih = true;
+                    jumlahKaliDipilih++;
+                }
+            }
+
+            // Tampilkan dengan warna hijau jika sudah dipilih
+            if (sudahDipilih) {
+                textcolor(GREEN);
+                printf("[%dx] ", jumlahKaliDipilih); // Tampilkan berapa kali dipilih
+            } else {
+                textcolor(WHITE);
+                printf("[ ] ");
+            }
+
+            printf("%d. %-22s : Rp %d        ", i+1, daftar[i].nama, daftar[i].harga);
+            textcolor(WHITE);
+        }
+
+        // Tampilkan instruksi
+        gotoxy(posX+3, posY + 3 + jumlah + 1);
+        textcolor(CYAN);
+        printf("Masukkan nomor layanan (1-%d)", jumlah);
+        textcolor(WHITE);
+
+        gotoxy(posX+3, posY + 3 + jumlah + 2);
+        textcolor(YELLOW);
+        printf("0  = Selesai & Lanjut");
+        textcolor(WHITE);
+
+        gotoxy(posX+3, posY + 3 + jumlah + 3);
+        textcolor(YELLOW);
+        printf("99 = Hapus pilihan terakhir");
+        textcolor(WHITE);
+
+        // Tampilkan pilihan yang sudah dipilih
+        gotoxy(posX+3, posY + height - 4);
+        printf("Jumlah dipilih: %d/5", jumlahPilihan);
+
+        gotoxy(posX+3, posY + height - 3);
+        printf("Pilihan Anda: ");
+        
+        // Tampilkan semua pilihan dengan detail
+        if (jumlahPilihan > 0) {
+            // Hitung berapa kali setiap layanan dipilih
+            int count[6] = {0}; // Index 0 tidak dipakai, 1-5 untuk layanan
+            for (int i = 0; i < jumlahPilihan; i++) {
+                count[pilihan[i]]++;
+            }
+            
+            // Tampilkan ringkasan
+            bool pertama = true;
+            for (int i = 1; i <= jumlah; i++) {
+                if (count[i] > 0) {
+                    if (!pertama) printf(", ");
+                    printf("%d(%dx)", i, count[i]);
+                    pertama = false;
+                }
+            }
+        } else {
+            printf("-");
+        }
+        printf("                "); // Clear sisa
+
+        // Input pilihan
+        gotoxy(posX+3, posY + height - 2);
+        printf("Masukkan pilihan: ");
+        printf("    "); // Clear input sebelumnya
+        
+        gotoxy(posX+22, posY + height - 2);
+        
+        int input;
+        scanf("%d", &input);
+
+        // Proses input
+        if (input == 0) {
+            // Selesai memilih
+            if (jumlahPilihan > 0) {
+                selesai = true;
+            } else {
+                // Tampilkan peringatan jika belum ada pilihan
+                gotoxy(posX+3, posY + height + 1);
+                textcolor(RED);
+                printf("Pilih minimal 1 layanan!");
+                textcolor(WHITE);
+                getch();
+                getch();
+                gotoxy(posX+3, posY + height + 1);
+                printf("                                        ");
+            }
+        }
+        else if (input == 99) {
+            // Hapus pilihan terakhir
+            if (jumlahPilihan > 0) {
+                jumlahPilihan--;
+                pilihan[jumlahPilihan] = 0;
+                
+                // Feedback
+                gotoxy(posX+3, posY + height + 1);
+                textcolor(YELLOW);
+                printf("Pilihan terakhir dihapus!");
+                textcolor(WHITE);
+                getch();
+                getch();
+                gotoxy(posX+3, posY + height + 1);
+                printf("                                        ");
+            } else {
+                gotoxy(posX+3, posY + height + 1);
+                textcolor(RED);
+                printf("Tidak ada pilihan untuk dihapus!");
+                textcolor(WHITE);
+                getch();
+                getch();
+                gotoxy(posX+3, posY + height + 1);
+                printf("                                        ");
+            }
+        }
+        else if (input >= 1 && input <= jumlah) {
+            // Tambah pilihan jika belum mencapai maksimal
+            if (jumlahPilihan < 5) {
+                pilihan[jumlahPilihan] = input;
+                jumlahPilihan++;
+                
+                // Feedback
+                gotoxy(posX+3, posY + height + 1);
+                textcolor(GREEN);
+                printf("Layanan '%s' ditambahkan!", daftar[input-1].nama);
+                textcolor(WHITE);
+                getch();
+                getch();
+                gotoxy(posX+3, posY + height + 1);
+                printf("                                        ");
+            } else {
+                // Sudah mencapai maksimal
+                gotoxy(posX+3, posY + height + 1);
+                textcolor(RED);
+                printf("Maksimal 10 layanan!");
+                textcolor(WHITE);
+                getch();
+                getch();
+                gotoxy(posX+3, posY + height + 1);
+                printf("                                        ");
+            }
+        }
+        else {
+            // Input tidak valid
+            gotoxy(posX+3, posY + height + 1);
+            textcolor(RED);
+            printf("Pilihan tidak valid!");
+            textcolor(WHITE);
+            getch();
+            getch();
+            gotoxy(posX+3, posY + height + 1);
+            printf("                                        ");
+        }
+    }
+
+    // Lanjut ke cetak struk
+    cetakStruk(pilihan, jumlahPilihan);
+}
+
+void cetakStruk(int pilihanList[], int count) {
+    clrscr();
+
+    int width = 60;
+    int height = 10 + count;
+    int posX = centerPointTerminalX - (width/2);
+    int posY = centerPointTerminalY - (height/2);
+
+    createBox(posX, width, posY, height,
+              BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY,
+              BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
+
+    gotoxy(posX+1, posY+1);
+    centertext(width-2, "STRUK PEMBAYARAN", ' ');
+
+    int total = 0;
+
+    // Tampilkan setiap layanan yang dipilih
+    for (int i = 0; i < count; i++) {
+        int index = pilihanList[i] - 1; // Convert ke index array (1->0, 2->1, dst)
+        
+        gotoxy(posX+3, posY + 3 + i);
+        printf("%d. %-25s : Rp %d",
+               i+1,
+               daftar[index].nama,
+               daftar[index].harga);
+
+        total += daftar[index].harga;
+    }
+
+    // Garis pemisah
+    gotoxy(posX+3, posY + 4 + count);
+    for (int i = 0; i < width-6; i++) {
+        printf("-");
+    }
+
+    // Total
+    gotoxy(posX+3, posY + 5 + count);
+    textcolor(YELLOW);
+    printf("TOTAL");
+    textcolor(WHITE);
+    printf(" : Rp %d", total);
+
+    // Instruksi kembali
+    gotoxy(posX+3, posY + 7 + count);
+    textcolor(CYAN);
+    printf("Tekan ENTER untuk kembali");
+    textcolor(WHITE);
+    getch();
+    getch(); // Tunggu input
+}
+
 int main()
 {
 #ifdef _WIN32
@@ -458,7 +682,6 @@ int main()
 #endif
 
     clrscr();
-    // showDaftarHarga();
     starttoLoginLoading();
     clrscr();
     if (isLogin)
