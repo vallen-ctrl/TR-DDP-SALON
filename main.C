@@ -305,7 +305,7 @@ void LoginPage()
 
         clrscr();
         textcolor(WHITE);
-        char question[] = "Apakah anda mau mencoba lagi? [tekan a | b]";
+        char question[] = "Apakah anda mau mencoba lagi? [tekan a | d]";
         gotoxy(centerPointTerminalX - (round(strlen(question) / 2)), centerPointTerminalY);
         printf("%s", question);
 
@@ -341,7 +341,7 @@ void LoginPage()
                     printf("N");
                     pilihan = 0;
                 }
-                else if (ch == 10)
+                else if (ch == 10 || ch == 13)
                 {
                     break;
                 }
