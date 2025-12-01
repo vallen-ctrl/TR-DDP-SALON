@@ -5,6 +5,19 @@
 #include "myconio.h"
 #include "char.h"
 
+struct Layanan {
+    char nama[50];
+    int harga;
+};
+
+struct Layanan daftar[10] = {
+    {"Potong", 15000},
+    {"Potong Cuci Blow", 20000},
+    {"Cuci Catok", 25000},
+    {"Coloring", 150000},
+    {"Smoothing", 150000},
+};
+
 char PASSWORD[100] = "1234";
 char USERNAME[100] = "admin";
 
@@ -399,7 +412,7 @@ void MenuBar()
         {
         case 1:
             clrscr();
-            printf("Pricelist...\n");
+            printf("DaftarHarga\n");
             printf("Tekan ENTER untuk kembali...");
             getchar();
             getchar();
@@ -407,7 +420,7 @@ void MenuBar()
 
         case 2:
             clrscr();
-            printf("Laporan Pendapatan...\n");
+            printf("cetakstruk\n");
             printf("Tekan ENTER untuk kembali...");
             getchar();
             getchar();
@@ -449,6 +462,77 @@ void loadingtoMenubar()
     centertext(lenght, "load file", ' ');
     createBox(posX, lenght + padding + 4, posY, height);
     commonloading(lenght, BR_VERTICAL_LIGHT, BR_VERTICAL_LIGHT, BR_VERTICAL_FULLBLOCK, NULL, false, posX + padding, posY + 2, 150);
+}
+
+void DaftarHarga() {
+    clrscr();
+
+    int jumlah = 9;
+    int width = 60;
+    int height = jumlah + 6;
+    int posX = centerPointTerminalX - (width/2);
+    int posY = centerPointTerminalY - (height/2);
+
+    createBox(posX, width, posY, height,
+              BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY,
+              BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
+
+    
+    gotoxy(posX+1, posY+1);
+    centertext(width-2, "DAFTAR HARGA SALON", ' ');
+
+    
+    for (int i = 0; i < jumlah; i++) {
+        gotoxy(posX+3, posY + 3 + i);
+        printf("%d. %-25s : Rp %d", i+1, daftar[i].nama, daftar[i].harga);
+    }
+
+    gotoxy(posX+3, posY + height - 2);
+    printf("Pilih layanan (1-%d): ", jumlah);
+
+    int pilihan;
+    scanf("%d", &pilihan);
+    pilihan--; 
+
+    cetakStruk(pilihan);     
+}
+
+void cetakStruk(int pilihanList[], int count) {
+    clrscr();
+
+    int width = 60;
+    int height = 10 + count;
+    int posX = centerPointTerminalX - (width/2);
+    int posY = centerPointTerminalY - (height/2);
+
+    createBox(posX, width, posY, height,
+              BR_HORIZONTAL_HEAVY, BR_VERTICAL_HEAVY,
+              BR_HD_R, BR_HD_L, BR_HD_BR, BR_HD_BL);
+
+    gotoxy(posX+1, posY+1);
+    centertext(width-2, "STRUK PEMBAYARAN", ' ');
+
+    int total = 0;
+
+    for (int i = 0; i < count; i++) {
+        gotoxy(posX+3, posY + 3 + i);
+        printf("%d. %-20s : Rp %d",
+               i+1,
+               daftar[pilihList[i]].nama,
+               daftar[pilihList[i]].harga);
+
+        total += daftar[pilihList[i]].harga;
+    }
+
+    gotoxy(posX+3, posY + 4 + count);
+    printf("-------------------------------");
+
+    gotoxy(posX+3, posY + 5 + count);
+    printf("TOTAL : Rp %d", total);
+
+    gotoxy(posX+3, posY + 7 + count);
+    printf("Tekan ENTER untuk kembali");
+    getchar();
 }
 
 int main()
