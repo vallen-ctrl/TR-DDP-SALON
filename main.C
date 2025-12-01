@@ -48,7 +48,6 @@ void createBox(int, int, int, int,
                const char *);
 // ======================================
 
-
 /**
     @brief Untuk menaruh text menjadi di tengah dengan mengetahui width yang tersedia
     @param width itu harus lebih besar dari panjang text yang ingin anda print.
@@ -331,7 +330,9 @@ void LoginPage()
                     printf(" / ");
                     printf("N");
                     pilihan = 1;
-                }else if(ch == 'd' || ch == 77){
+                }
+                else if (ch == 'd' || ch == 77)
+                {
                     gotoxy(centerPointTerminalX - 4, centerPointTerminalY + 1);
                     textcolor(WHITE);
                     printf("Y");
@@ -339,11 +340,11 @@ void LoginPage()
                     textcolor(RED);
                     printf("N");
                     pilihan = 0;
-                }else if (ch == 10)
-                {
-                   break; 
                 }
-                
+                else if (ch == 10)
+                {
+                    break;
+                }
             }
         }
 
@@ -435,18 +436,19 @@ void MenuBar()
     }
 }
 
-void loadingtoMenubar(){
+void loadingtoMenubar()
+{
     int lenght = 20;
     int height = 4;
     int padding = 2;
-    int posX = centerPointTerminalX - round((lenght+padding+2)/2);
+    int posX = centerPointTerminalX - round((lenght + padding + 2) / 2);
     int posY = 6;
-    
-    char msg[]= "load file please wait";
-    gotoxy(posX+padding, posY+1);
+
+    char msg[] = "load file please wait";
+    gotoxy(posX + padding, posY + 1);
     centertext(lenght, "load file", ' ');
-    createBox(posX, lenght+padding+4, posY,height);
-    commonloading(lenght, BR_VERTICAL_LIGHT,BR_VERTICAL_LIGHT, BR_VERTICAL_FULLBLOCK, NULL, false, posX+padding, posY+2, 150);
+    createBox(posX, lenght + padding + 4, posY, height);
+    commonloading(lenght, BR_VERTICAL_LIGHT, BR_VERTICAL_LIGHT, BR_VERTICAL_FULLBLOCK, NULL, false, posX + padding, posY + 2, 150);
 }
 
 int main()
@@ -464,12 +466,13 @@ int main()
         loadingtoMenubar();
         clrscr();
         MenuBar();
-    }else{
-        printf(" ██████╗  ██████╗  ██████╗ ██████╗     ██████╗ ██╗   ██╗███████╗    ██╗\n");
-        printf("██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║\n");
-        printf("██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║\n");
-        printf("██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝\n");
-        printf("╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝    ██████╔╝   ██║   ███████╗    ██╗\n");
-        printf(" ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝     ╚═════╝    ╚═╝   ╚══════╝    ╚═╝\n");
     }
+
+    resetcolor();
+    printf(" ██████╗  ██████╗  ██████╗ ██████╗     ██████╗ ██╗   ██╗███████╗    ██╗\n");
+    printf("██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗    ██╔══██╗╚██╗ ██╔╝██╔════╝    ██║\n");
+    printf("██║  ███╗██║   ██║██║   ██║██║  ██║    ██████╔╝ ╚████╔╝ █████╗      ██║\n");
+    printf("██║   ██║██║   ██║██║   ██║██║  ██║    ██╔══██╗  ╚██╔╝  ██╔══╝      ╚═╝\n");
+    printf("╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝    ██████╔╝   ██║   ███████╗    ██╗\n");
+    printf(" ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝     ╚═════╝    ╚═╝   ╚══════╝    ╚═╝\n");
 }
